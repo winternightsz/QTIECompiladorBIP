@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Janela</class>
+ <widget class="QMainWindow" name="Janela">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1203</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>26</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>IDE QTIE</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="QIcon::ThemeIcon::FormatTextItalic"/>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow { background-image: url(:/images/skyNight.png); }
+
+ QMainWindow::separator {
+     background: rgba(85, 88, 255, 100);
+     width: 10px; /* when vertical */
+     height: 10px; /* when horizontal */
+ }
+
+ QMainWindow::separator:hover {
+     background:  rgba(85, 88, 255, 170);
+ }
+</string>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::DockOption::AllowNestedDocks|QMainWindow::DockOption::AllowTabbedDocks|QMainWindow::DockOption::AnimatedDocks</set>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0">
+    <item>
+     <widget class="QPlainTextEdit" name="entrada">
+      <property name="font">
+       <font>
+        <family>Roboto Condensed</family>
+        <pointsize>20</pointsize>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPlainTextEdit{
+background: rgba(255, 255, 255, 30);
+color: white;
+	font: 20pt &quot;Roboto Condensed&quot;;
+}</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Orientation::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>4</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QTextEdit" name="console">
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>20</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTextEdit{
+background: rgba(255, 255, 255, 30);
+color: white;
+font: 20pt &quot;Roboto Condensed&quot;;
+}</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="botaoCompilar">
+        <property name="font">
+         <font>
+          <family>Pixellari</family>
+          <pointsize>26</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {color: rgb(255, 255, 255)}</string>
+        </property>
+        <property name="text">
+         <string>Compilar</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item alignment="Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignVCenter">
+     <widget class="QPushButton" name="pushTabela">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777203</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Pixellari</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {color: rgb(255, 255, 255)}</string>
+      </property>
+      <property name="text">
+       <string>Tabela e Assembly</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>12</width>
+        <height>12</height>
+       </size>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1203</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>541</width>
+     <height>727</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>800</width>
+     <height>524287</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QDockWidget {
+     border: 1px solid pink;
+	background: rgb(97, 97, 255);
+	font: 500 26pt &quot;Pixellari&quot;;
+	color: white;
+ }
+
+ QDockWidget::title {
+     text-align: left;     
+     padding: 10px;
+ }
+
+ QDockWidget::close-button, QDockWidget::float-button {
+    background: white;
+     
+     
+ }
+
+ QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+     background: gray;
+ }
+
+ QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+     padding: 1px -1px -1px 1px;
+ }
+</string>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFeature::DockWidgetClosable|QDockWidget::DockWidgetFeature::DockWidgetFloatable|QDockWidget::DockWidgetFeature::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::DockWidgetArea::AllDockWidgetAreas</set>
+   </property>
+   <property name="windowTitle">
+    <string>Tabela</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>500</width>
+      <height>670</height>
+     </size>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>931</width>
+       <height>661</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>20</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <widget class="QTableWidget" name="tabelaSimbolosUI">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="font">
+         <font>
+          <family>Pixellari</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <underline>true</underline>
+          <fontweight>Medium</fontweight>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTableWidget{
+font: 500 9pt &quot;Pixellari&quot;;
+background: rgba(170, 170, 255, 200)rgba(108, 128, 255, 200);
+}
+
+QHeaderView::section {
+           background-color: rgb(84, 92, 254);
+           color: white;
+        }</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="saidaAsmUI">
+        <property name="font">
+         <font>
+          <family>Pixellari</family>
+          <pointsize>14</pointsize>
+          <italic>false</italic>
+          <fontweight>Medium</fontweight>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTextEdit{
+background: rgba(255, 255, 255, 30);
+color: white;
+}</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <zorder>dockWidget</zorder>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

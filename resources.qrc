@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>skyNight.png</file>
+    </qresource>
+</RCC>
