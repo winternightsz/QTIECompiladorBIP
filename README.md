@@ -1,7 +1,7 @@
 # QTIE Compilador BIP 
 
 Este projeto contém um **compilador desenvolvido em C++ utilizando Qt Creator** que gera código BIP a partir de uma linguagem própria semelhante a C.  
-O repositório inclui lexer, parser, ações semânticas, gerador de código e exemplos de entrada/saída.
+O repositório inclui lexer, parser, ações semânticas, gerador de código, arquivos .gals e exemplos de entrada/saída.
 
 ## Sobre o Projeto
 - Projeto para disciplina de Compiladores sob orientação do professor: Eduardo Alves da Silva.
