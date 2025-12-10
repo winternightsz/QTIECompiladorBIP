@@ -4,6 +4,7 @@ Este projeto contém um **compilador desenvolvido em C++ utilizando Qt Creator**
 O repositório inclui lexer, parser, ações semânticas, gerador de código, arquivos .gals e exemplos de entrada/saída.
 
 ## Sobre o Projeto
+- Completo para geração de código 1, 2 e 3.
 - Projeto para disciplina de Compiladores sob orientação do professor: Eduardo Alves da Silva.
 - Alunos: Helena Becker Piazera, Izabela Andreazza e Logan Santana Fernandes.
 - Universidade do Vale do Itajaí 
@@ -199,6 +200,64 @@ Execução
 
 ## **5. Exemplos de Uso**
 
+### Exemplo – Função com parâmetro, retorno e chamada de função
+
+Entrada:
+
+```c
+int soma2(int x) {
+    return x + 2;
+}
+
+int main() {
+    int a;
+    int r;
+
+    a = 5;
+    r = soma2(a);
+}
+```
+Saída BIP:
+```asm
+.data
+x: 0      ; parâmetro da função soma2
+a: 0      ; variável local em main
+r: 0      ; variável local em main
+
+.text
+    ; pula a definição das funções — execução começa em main
+    JMP _MAIN
+
+_soma2:
+    ; função: int soma2(int x) { return x + 2; }
+
+    LD  x          ; ACC = parâmetro x
+    ADDI 2         ; ACC = x + 2
+    RETURN 0       ; devolve o valor em ACC ao chamador
+
+
+_MAIN:
+    ; código do main
+
+    ; a = 5;
+    LDI 5
+    STO a
+
+    ; r = soma2(a);
+
+    ; (1) passa argumento por cópia
+    LD  a          ; ACC = a
+    STO x          ; parâmetro x = a
+
+    ; (2) chama a função
+    CALL _soma2    ; ACC recebe o retorno
+
+    ; (3) armazena o retorno em r
+    STO r
+
+    HLT 0
+```
+
 Entrada:
 
 ```c
@@ -236,6 +295,161 @@ _MAIN:
     CALL _soma
     STO x
     HLT 0
+```
+### Exemplo – Retorno de Função (sem parâmetros)
+
+Entrada:
+
+```c
+int dez() {
+    return 10;
+}
+
+int main() {
+    int r;
+    r = dez();
+}
+```
+
+Saída BIP:
+
+```asm
+.data
+r: 0
+
+.text
+    JMP _MAIN
+
+_dez:
+    LDI 10
+    RETURN 0         ; devolve 10 ao chamador
+
+_MAIN:
+    CALL _dez        ; ACC = 10
+    STO r            ; r = 10
+    HLT 0
+
+```
+
+### Exemplo – Parâmetro por Cópia
+
+Entrada:
+
+```c
+int ident(int x) {
+    return x;
+}
+
+int main() {
+    int a;
+    int r;
+
+    a = 5;
+    r = ident(a);
+}
+```
+
+Saída BIP:
+
+```asm
+.data
+x: 0
+a: 0
+r: 0
+
+.text
+    JMP _MAIN
+
+_ident:
+    LD  x
+    RETURN 0
+
+_MAIN:
+    LDI 5
+    STO a
+
+    LD  a
+    STO x          ; passa parâmetro por cópia
+    CALL _ident
+    STO r
+
+    HLT 0
+```
+### Exemplo – Chamada de função (sem retorno usado)
+
+Entrada:
+
+```c
+void show5() {
+    print(5);
+}
+
+int main() {
+    show5();
+}
+```
+
+Saída BIP:
+
+```asm
+.data
+
+.text
+    JMP _MAIN
+
+_show5:
+    LDI 5
+    STO $out_port   ; print(5)
+    RETURN 0
+
+_MAIN:
+    CALL _show5
+    HLT 0
+
+```
+### Exemplo – Chamada de função (sem retorno usado)
+
+Entrada:
+
+```c
+void show5() {
+    print(5);
+}
+
+int main() {
+    show5();
+}
+```
+
+Saída BIP:
+
+```asm
+.data
+
+.text
+    JMP _MAIN
+
+_show5:
+    LDI 5
+    STO $out_port   ; print(5)
+    RETURN 0
+
+_MAIN:
+    CALL _show5
+    HLT 0
+
+```
+### Caso Incorreto (erro semântico)
+
+```c
+int soma(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int r;
+    r = soma(1);    // ERRO → falta argumento b
+}
 ```
 
 
