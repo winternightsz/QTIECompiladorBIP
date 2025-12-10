@@ -1,0 +1,228 @@
+Tokens:
+LIT_INTEIRO : [0-9]+ 
+LIT_DECIMAIS : [0-9]+\.[0-9]+
+LIT_BINARIO : 0[bB][01]+
+LIT_HEX : 0[xX][0-9a-fA-F]+
+LIT_STRING : \"([^\"\\\r\n]|\\[ntr\"\\])*\"
+LIT_CHAR   : "'" ( [^'\\\n\r] | "\\" [ntr'\\] ) "'"
+//APOSTROFO_CHAR : "'" 
+
+ID: [A-Za-z_][A-Za-z0-9_]* 
+KEY_INT = ID : "int" 
+KEY_FLOAT = ID : "float"
+KEY_END = ID : "end"
+KEY_DOUBLE = ID : "double"
+KEY_CHAR = ID : "char"
+KEY_STRING = ID : "string"
+KEY_BOOL = ID : "bool"
+KEY_RETURN = ID : "return"
+KEY_VOID = ID : "void"
+KEY_WHILE = ID : "while"
+KEY_FOR  = ID : "for"
+KEY_IF  = ID : "if"
+KEY_ELSE = ID : "else"
+KEY_SWITCH = ID : "switch"
+KEY_CASE = ID : "case"
+KEY_BREAK = ID : "break"
+KEY_CLASS = ID : "class"
+KEY_NAMESPACE = ID : "namespace"
+KEY_CONTINUE =  ID : "continue"
+KEY_DO = ID : "do"
+
+KEY_TRUE  = ID : "true"
+KEY_FALSE = ID : "false"
+KEY_COUT = ID : "cout"
+KEY_PRINT = ID: "print"
+KEY_CIN = ID : "cin"
+
+OP_SUM : "+"
+OP_SUB: "-" 
+OP_MUL : "*" 
+OP_DIV : "/"
+OP_EQU : "=" 
+OP_MOD : "%"
+
+OP_MAIORIGUAL       : ">="
+OP_MENORIGUAL       : "<="
+OP_IGUALDADE        : "=="
+OP_DIFERENTE        : "!="
+OP_MAIOR            : ">"
+OP_MENOR            : "<"
+
+OP_AND              : "&&"
+OP_OR               : "||"
+OP_NOT              : "!"
+
+OP_SHR              : ">>"
+OP_SHL              : "<<"
+OP_BIT_AND          : "&"
+OP_BIT_OR           : "|"
+OP_BIT_NOT          : "~"
+OP_BIT_XOR          : "^"
+
+DELIM_PONTO         : "."
+DELIM_VIRGULA       : ","
+DELIM_PONTOVIRGULA  : ";"
+DELIM_DOIS_PONTOS   : ":"
+DELIM_PAREN_ESQ     : "("
+DELIM_PAREN_DIR     : ")"
+DELIM_CHAVE_ESQ     : "{"
+DELIM_CHAVE_DIR     : "}"
+DELIM_COLCH_ESQ     : "["
+DELIM_COLCH_DIR     : "]"
+
+COMENTARIO : [/] [/] [^\n]*
+COMENTARIO_MULTILINHA: "/*" ( [^\*] | [\r\n] | ( "*"+ ( [^/\*] | [\r\n] ) ) )* "*"+ "/"
+
+: [\s\n\t\r]*
+
+Gramática:
+//início
+<programa> ::= <lista_declaracoes> #201;
+<lista_declaracoes> ::= <declaracao> <lista_declaracoes> | <declaracao>;
+
+
+//declaração pode ser de variável ou de função
+<declaracao> ::= <declaracao_variavel> | <declaracao_funcao> ;
+
+               
+//declarar variaveis
+<declaracao_variavel> ::= <tipo_dado>#1 <lista_nomes_init> DELIM_PONTOVIRGULA ;
+<lista_nomes_init> ::= <nome_init> <mais_nomes_init> ;
+<nome_init> ::= ID #2 <delimitador_vetor> <init_opcional> ;
+<init_opcional> ::= OP_EQU <expressao> #6 | î ;
+<mais_nomes_init> ::= DELIM_VIRGULA <nome_init> <mais_nomes_init> | î ;
+
+<delimitador_vetor> ::= DELIM_COLCH_ESQ LIT_INTEIRO #13 DELIM_COLCH_DIR #3 <delimitador_vetor> | î ;
+
+
+//declarar funções
+<declaracao_funcao> ::= <tipo_retorno> ID #2 DELIM_PAREN_ESQ #4 <parametros_opcionais> DELIM_PAREN_DIR #600 <bloco_comandos> #601 ;
+<tipo_retorno> ::= <tipo_dado> #1 | KEY_VOID #1 ;
+
+
+//chamar função
+<chamada_funcao> ::= ID #602 DELIM_PAREN_ESQ <argumentos_opcionais> DELIM_PAREN_DIR #605 ;
+<argumentos_opcionais> ::= <lista_argumentos> | î;
+<lista_argumentos> ::= <expressao> #603 <mais_argumentos> ;
+<mais_argumentos> ::= DELIM_VIRGULA <expressao> #603 <mais_argumentos> | î;
+
+
+//parâmetros da função (permite vazio)
+<parametros_opcionais> ::= <lista_parametros> | î;
+<lista_parametros> ::= <parametro> <mais_parametros> ;
+<mais_parametros> ::= DELIM_VIRGULA <parametro> <mais_parametros> | î;
+<parametro> ::= <tipo_dado>#1 ID#2 #5 <delimitador_vetor> ;
+ 
+
+ //return
+<comando_return> ::= KEY_RETURN <expressao_opcional> #610 DELIM_PONTOVIRGULA ;
+<expressao_opcional> ::= <expressao> #611
+                       | î           #612 ;
+
+ 
+ 
+//tipos suportados
+<tipo_dado> ::= KEY_INT 
+              | KEY_FLOAT 
+              | KEY_DOUBLE 
+              | KEY_CHAR 
+              | KEY_STRING 
+              | KEY_BOOL ;
+   
+              
+//conjunto de instruções agrupadas entre chaves
+<bloco_comandos> ::= DELIM_CHAVE_ESQ #7 <lista_comandos> DELIM_CHAVE_DIR #8;
+<lista_comandos> ::= <comando> <lista_comandos> | î;
+<comando> ::= <declaracao_variavel>
+            | <atribuicao> DELIM_PONTOVIRGULA
+            | <comando_if>
+            | <comando_while>
+            | <comando_do_while>
+            | <comando_for>
+            | <comando_saida> DELIM_PONTOVIRGULA
+            | <comando_entrada> DELIM_PONTOVIRGULA
+            | <chamada_funcao> DELIM_PONTOVIRGULA
+            | <comando_return>
+            | <bloco_comandos> ;
+
+
+//atribuição
+<atribuicao> ::= ID #11 <caso_vetor> OP_EQU <expressao> #12 ;
+<caso_vetor> ::= <dimensoes_vetor> | î;
+<dimensoes_vetor> ::= DELIM_COLCH_ESQ <expressao> #115 DELIM_COLCH_DIR #121 <dimensoes_vetor> | î;
+
+
+//condicionais
+<comando_if> ::= KEY_IF DELIM_PAREN_ESQ <expressao> DELIM_PAREN_DIR #300 <comando> #301 <comando_else> #302 ;
+<comando_else> ::= KEY_ELSE #303 <comando> | î;
+
+
+//laços de repetição
+<comando_while> ::= KEY_WHILE #400
+                    DELIM_PAREN_ESQ <expressao> DELIM_PAREN_DIR #401
+                    <bloco_comandos> #402 ;
+
+<comando_do_while> ::= KEY_DO         #500
+                       <bloco_comandos>  
+                       KEY_WHILE DELIM_PAREN_ESQ 
+                       <expressao>    #502 
+                       DELIM_PAREN_DIR DELIM_PONTOVIRGULA ;
+
+<comando_for> ::= KEY_FOR DELIM_PAREN_ESQ 
+                    <inicializacao_for>          #410
+                    DELIM_PONTOVIRGULA 
+                    <expressao>                  #411
+                    DELIM_PONTOVIRGULA           #412
+                    <atribuicao> 
+                  DELIM_PAREN_DIR                #413
+                  <bloco_comandos>               #414 ;
+
+<inicializacao_for> ::= <atribuicao> | <decl_init_for> ;
+<decl_init_for> ::= <tipo_dado> <lista_nomes_init> ;
+
+
+//saída de dados
+<comando_saida> ::= KEY_COUT OP_SHL <expressao> <mais_saidas> 
+                  |  KEY_PRINT DELIM_PAREN_ESQ <expressao> DELIM_PAREN_DIR #200 ;
+<mais_saidas>   ::= OP_SHL <expressao> <mais_saidas> | î #200;
+
+
+//entrada de dados
+<comando_entrada> ::= KEY_CIN OP_BIT_AND ID #12 <caso_vetor> ;
+
+
+//expressões
+<expressao> ::= <expressao> OP_OR        #61 <exp1> #70 | <exp1>;
+<exp1>      ::= <exp1>      OP_AND       #60 <exp2> #70 | <exp2>;
+<exp2>      ::= <exp2>      OP_BIT_OR    #62 <exp3> #70 | <exp3>;
+<exp3>      ::= <exp3>      OP_BIT_XOR   #63 <exp4> #70 | <exp4>;
+<exp4>      ::= <exp4>      OP_BIT_AND   #64 <exp5> #70 | <exp5>;   
+<exp5>      ::= <exp5>      <op_rel>         <exp6> #70 | <exp6>;
+<exp6>      ::= <exp6>      <op_bitwise>     <exp7> #70 | <exp7>;
+<exp7>      ::= <exp7>      <op_arit_baixa>  <exp8> #70 | <exp8>;
+<exp8>      ::= <exp8>      <op_arit_alta>   <exp9> #70 | <exp9>;
+<exp9> ::= <op_neg> <exp10> | <exp10>;
+<exp10> ::= LIT_INTEIRO #20
+          | LIT_DECIMAIS #21
+          | LIT_CHAR #22
+          | LIT_STRING #23
+          | KEY_TRUE #24
+          | KEY_FALSE #24
+          | ID #9
+          | <posfixo_id>
+          | DELIM_PAREN_ESQ <expressao> DELIM_PAREN_DIR ;
+
+<op_rel>      ::= OP_MAIOR #48 | OP_MENOR #49 | OP_MAIORIGUAL #50 | OP_MENORIGUAL #51 | OP_IGUALDADE #52 | OP_DIFERENTE #53;
+<op_bitwise>  ::= OP_SHR #46 | OP_SHL #47;
+<op_arit_baixa> ::= OP_SUM #41 | OP_SUB #42;
+<op_arit_alta>  ::= OP_MUL #43 | OP_DIV #44 | OP_MOD #45;
+<op_neg> ::= OP_SUB | OP_BIT_NOT | OP_NOT;
+
+//ID, ID(...), ID[expr], ID(...)[expr] como átomos de expressão.
+<posfixo_id> ::= ID #202 <posfixo_tail> ;
+<posfixo_tail> ::= DELIM_PAREN_ESQ #700 <argumentos_opcionais> DELIM_PAREN_DIR #701 <acessos_vetor>
+                 | <acessos_vetor>
+                 | î ;
+<acessos_vetor> ::= DELIM_COLCH_ESQ <expressao> DELIM_COLCH_DIR #120 <acessos_vetor> | î ;
+
