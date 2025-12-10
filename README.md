@@ -3,6 +3,10 @@
 Este projeto contém um **compilador desenvolvido em C++ utilizando Qt Creator** que gera código BIP a partir de uma linguagem própria semelhante a C.  
 O repositório inclui lexer, parser, ações semânticas, gerador de código e exemplos de entrada/saída.
 
+## Sobre o Projeto
+- Projeto para disciplina de Compiladores sob orientação do professor: Eduardo Alves da Silva.
+- Alunos: Helena Becker Piazera, Izabela Andreazza e Logan Santana Fernandes.
+- Universidade do Vale do Itajaí 
 ---
 
 ## **1. Requisitos para Compilar ou Executar o Compilador**
